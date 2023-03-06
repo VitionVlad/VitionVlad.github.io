@@ -123,7 +123,7 @@ class Engine{
         this.canvas = document.querySelector("#glCanvas");
         this.canvas.width = window.screen.width;
         this.canvas.height = window.screen.height;
-        this.gl = this.canvas.getContext("webgl");
+        this.gl = this.canvas.getContext("webgl2");
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.enable(this.gl.DEPTH_TEST);
