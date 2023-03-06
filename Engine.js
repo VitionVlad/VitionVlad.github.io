@@ -120,18 +120,9 @@ class Engine{
         return shaderProgram;
     }
     constructor(){
-        let details = navigator.userAgent;
-        let regexp = /android|iphone|kindle|ipad/i;
-        let isMobileDevice = regexp.test(details);
         this.canvas = document.querySelector("#glCanvas");
-        if (isMobileDevice) {
-            screen.orientation.lock('landscape');
-            this.canvas.width = window.screen.width;
-            this.canvas.height = window.screen.height;
-        } else {
-            this.canvas.width = window.screen.width;
-            this.canvas.height = window.screen.height;
-        }
+        this.canvas.width = window.screen.width;
+        this.canvas.height = window.screen.height;
         this.gl = this.canvas.getContext("webgl2");
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -308,6 +299,15 @@ class Engine{
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         if(this.playerphysics === true){
             this.pos.y += this.playerforce;
+        }
+        var resolution = new vec2(window.screen.width, window.screen.height);
+        var touchpos = new vec2(Touch.clientX, Touch.clientY);
+        if(touchpos.x < resolution.x/2){
+            this.pos.z += Math.cos(this.rot.y) * Math.cos(this.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
+            this.pos.x -= Math.cos(this.rot.y) * Math.sin(this.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
+        }else if(touchpos.x > resolution.x/2){
+            this.rot.x += (((touchpos.x/ (resolution.x*1.7))*2) -1)*0.1;
+            this.rot.y += ((((-touchpos.y/resolution.y)*2) +1)*0.01);
         }
     }
     endFrame(framefunc, now){
