@@ -135,21 +135,6 @@ class Engine{
             this.dptex = false;
             console.log("depth texture extension missing");
         }
-        this.touchHandler = function(event) {
-            let x = event.touches[0].clientX, y = event.touches[0].clientY;
-            var resolution = new vec2(window.screen.width, window.screen.height);
-            var touchpos = new vec2(x, y);
-            if(touchpos.x < resolution.x/2){
-                this.pos.z += Math.cos(this.rot.y) * Math.cos(this.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
-                this.pos.x -= Math.cos(this.rot.y) * Math.sin(this.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
-            }else if(touchpos.x > resolution.x/2){
-                this.rot.x += (((touchpos.x/ (resolution.x*1.7))*2) -1)*0.1;
-                this.rot.y += ((((-touchpos.y/resolution.y)*2) +1)*0.01);
-            }
-        }
-        window.addEventListener('touchstart', this.touchHandler, false);
-        window.addEventListener('touchmove', this.touchHandler, false);
-        window.addEventListener('touchend', this.touchHandler, false);
         this.fov = 120;
         this.pos = new vec3(0.0, 0.0, 0.0);
         this.lpos = new vec3(0.0, 0.0, 0.0);

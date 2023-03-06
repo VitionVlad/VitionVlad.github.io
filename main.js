@@ -241,6 +241,24 @@ function main(){
             document.getElementById("glCanvas").requestFullscreen();
         };
     }
+
+    var resolution = new vec2(eng.canvas.width, eng.canvas.height);
+    var x, y;
+    var stillt = false;
+    var touchHandler = function(event) {
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+    }
+    var begtouch = function(event) {
+        stillt = true;
+    }
+    var endtouch = function(event) {
+        stillt = false;
+    }
+    eng.canvas.addEventListener("touchmove", touchHandler);
+    eng.canvas.addEventListener("touchstart", begtouch);
+    eng.canvas.addEventListener("touchend", endtouch);
+
     drawFrame();
     function drawFrame(now){
         eng.beginShadowPass();
@@ -251,6 +269,16 @@ function main(){
         eng.beginFrame();
         mousecallback();
         key_callback();
+        var touchpos = new vec2(x, y);
+        if(stillt === true){
+            if(touchpos.x < resolution.x/2){
+                eng.pos.z += Math.cos(eng.rot.y) * Math.cos(eng.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
+                eng.pos.x -= Math.cos(eng.rot.y) * Math.sin(eng.rot.x) * (((((-touchpos.y/resolution.y)*2) +1)*0.01)*2);
+            }else if(touchpos.x > resolution.x/2){
+                eng.rot.x += (((((touchpos.x/resolution.x)-0.5)*2)*2)-1)/100;
+                eng.rot.y -= ((((-touchpos.y/resolution.y)*2) +1)*0.01);
+            }
+        }
 
         mesh3.Draw(eng);
         mesh.Draw(eng);
