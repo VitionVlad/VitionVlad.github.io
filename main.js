@@ -26,7 +26,7 @@ float shadowMapping(){
   vec3 projected = str.xyz / str.w;
   float fshadow = 0.0f;
   if(projected.z <= 1.0f){ 
-   projected.xy = (projected.xy + 1.0f)/2.0f; 
+   projected = (projected + 1.0f)/2.0f; 
    float closestDepth = texture(shadow, projected.xy).r; 
    float currentDepth = projected.z; 
    if(currentDepth > closestDepth){ 
@@ -186,8 +186,8 @@ function main(){
     const sensivity = 500;
     var eng = new Engine();
     eng.useorthosh = true;
-    eng.sfov = 15;
-    eng.sfar = 6.0;
+    eng.sfar = 100.0;
+    eng.sfov = 15.0;
     //eng.playerphysics = false;
     eng.pos.z = -1.0;
     eng.pos.y = -2.7;
