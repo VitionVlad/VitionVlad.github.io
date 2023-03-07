@@ -23,18 +23,18 @@ const float quadratic = 0.032;
 in vec4 str;
 
 float shadowMapping(){
-  vec3 projected = str.xyz / str.w;
-  float fshadow = 0.0f;
-  if(projected.z <= 1.0f){ 
-   projected = (projected + 1.0f)/2.0f; 
-   float closestDepth = texture(shadow, projected.xy).r; 
-   float currentDepth = projected.z; 
-   if(currentDepth > closestDepth){ 
-    fshadow+=1.0f;
-   } 
+    vec3 projected = str.xyz / str.w;
+    float fshadow = 0.0f;
+    if(projected.z <= 1.0f){ 
+     projected = (projected + 1.0f)/2.0f; 
+     float closestDepth = texture(shadow, projected.xy).r; 
+     float currentDepth = projected.z; 
+     if(currentDepth > closestDepth){ 
+      fshadow+=1.0f;
+     } 
+    } 
+    return fshadow; 
   } 
-  return fshadow; 
-} 
 
 void main(){
     vec3 finalcolor = vec3(0);
