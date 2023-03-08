@@ -250,6 +250,7 @@ class Engine{
         this.fps = 0;
         this.playerphysics = true;
         this.playerforce = 0.01;
+        this.framecounter = 0;
     }
     aabbPlayer(meshPos, meshBorder, enableColision){
         var toreturn  = false;
@@ -319,6 +320,7 @@ class Engine{
         const delta =  now - this.then;
         this.then = now;
         this.fps = 1 / delta;
+        this.framecounter += 1;
         requestAnimationFrame(framefunc);
     }
 }
@@ -438,6 +440,8 @@ class Mesh{
         engineh.gl.bindTexture(engineh.gl.TEXTURE_2D, null);
         this.aabb = new vec3(0.0, 0.0, 0.0);
         this.interacting = false;
+        this.normalrendermode = engineh.gl.TRIANGLES;
+        this.shadowrendermode = engineh.gl.TRIANGLES;
     }
     CalcAABB(){
         this.aabb.x = 0;
@@ -557,7 +561,7 @@ class Mesh{
             engineh.gl.activeTexture(engineh.gl.TEXTURE3);
             engineh.gl.bindTexture(engineh.gl.TEXTURE_2D, this.norm);
 
-            if(this.cubemap.texture !== null){
+            if(this.cubemap != null){
                 engineh.gl.uniform1i(engineh.gl.getUniformLocation(this.shaderprog, "cubemap"), 4);
                 engineh.gl.activeTexture(engineh.gl.TEXTURE4);
                 engineh.gl.bindTexture(engineh.gl.TEXTURE_CUBE_MAP, this.cubemap.texture);
@@ -579,7 +583,7 @@ class Mesh{
             engineh.gl.enableVertexAttribArray(this.tangentLoc);
             engineh.gl.vertexAttribPointer(this.tangentLoc, 3, engineh.gl.FLOAT, false, 0, 0);
 
-            engineh.gl.drawArrays(engineh.gl.TRIANGLES, 0, this.totalv);
+            engineh.gl.drawArrays(this.normalrendermode, 0, this.totalv);
         }else if(engineh.isshadowpass === true){
             engineh.gl.cullFace(this.shadowcullmode);
             engineh.gl.useProgram(engineh.shadowprog);
@@ -630,7 +634,7 @@ class Mesh{
             engineh.gl.enableVertexAttribArray(engineh.positionLoc);
             engineh.gl.vertexAttribPointer(engineh.positionLoc, 3, engineh.gl.FLOAT, false, 0, 0);
 
-            engineh.gl.drawArrays(engineh.gl.TRIANGLES, 0, this.totalv);
+            engineh.gl.drawArrays(this.shadowrendermode, 0, this.totalv);
         }
     }
 }
