@@ -258,7 +258,9 @@ function main(){
     eng.canvas.addEventListener("touchmove", touchHandler);
     eng.canvas.addEventListener("touchstart", begtouch);
     eng.canvas.addEventListener("touchend", endtouch);
-
+    
+    mousecallback();
+    key_callback();
     drawFrame();
     function drawFrame(now){
         eng.beginShadowPass();
@@ -267,8 +269,6 @@ function main(){
         mesh2.Draw(eng);
 
         eng.beginFrame();
-        mousecallback();
-        key_callback();
         var touchpos = new vec2(x, y);
         if(stillt === true){
             if(touchpos.x < resolution.x/2){
