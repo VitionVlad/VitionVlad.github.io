@@ -182,8 +182,8 @@ var locked = false;
 
 function main(){
     document.body.style.cursor = 'none';
-    const speed = 0.0001;
-    const sensivity = 500;
+    const speed = 0.1;
+    const sensivity = 1;
     var eng = new Engine();
     eng.useorthosh = true;
     eng.sfar = 100.0;
